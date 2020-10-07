@@ -22,6 +22,7 @@ export default class DataBus {
     this.score      = 0
     this.bullets    = []
     this.enemys     = []
+    this.spikes     = []
     this.animations = []
     this.gameOver   = false
   }
@@ -48,5 +49,13 @@ export default class DataBus {
     temp.visible = false
 
     this.pool.recover('bullet', bullet)
+  }
+
+  removeSpikes(spikes) {
+    // let temp = this.spikes.shift()
+
+    // temp.visible = false
+
+    // this.pool.recover('spike', spikes)
   }
 }
