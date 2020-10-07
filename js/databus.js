@@ -52,10 +52,10 @@ export default class DataBus {
   }
 
   removeSpikes(spikes) {
-    // let temp = this.spikes.shift()
+    let temp = this.spikes.shift()
 
-    // temp.visible = false
+    temp.visible = false
 
-    // this.pool.recover('spike', spikes)
+    this.pool.recover('spike', spikes)
   }
 }

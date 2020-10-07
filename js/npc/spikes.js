@@ -19,7 +19,7 @@ export default class Spike extends Sprite {
   }
 
   init(x, y, speed) {
-    console.log("spike: ", x, y)
+    // console.log("spike: ", x, y)
 
     this.x = x + ENEMY_WIDTH / 2 - SPIKE_WIDTH / 2
     this.y = y + ENEMY_HEIGHT / 2 + 10
@@ -34,11 +34,10 @@ export default class Spike extends Sprite {
   // 每一帧更新子弹位置
   update() {
     // console.log("Here", this.x, this.y, this.visible)
-    // this.y += this[__.speed]
+    this.y += this[__.speed]
 
-    // // 超出屏幕外回收自身
-    // if ( this.y > this.height )
-    //   // this.visible = false
-    //   databus.removeSpikes(this)
+    // 超出屏幕外回收自身
+    if ( this.y > window.innerHeight )
+      databus.removeSpikes(this)
   }
 }

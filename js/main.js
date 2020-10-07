@@ -40,6 +40,8 @@ export default class Main {
     this.music    = new Music()
     this.enemyActive = false
     this.initEnemy = true
+    this.enemyX    = 0
+    this.enemyY    = 0
 
     this.bindLoop     = this.loop.bind(this)
     this.hasEventBind = false
@@ -63,16 +65,17 @@ export default class Main {
       this.enemyActive = true
       this.initEnemy = false
       databus.enemys = []
-      let x = rnd(0, window.innerWidth - ENEMY_WIDTH)
-      let y = window.innerHeight / 4 
-      enemy.init(x, y, 6)
+      this.enemyX = rnd(0, window.innerWidth - ENEMY_WIDTH)
+      this.enemyY = window.innerHeight / 4 
+      enemy.init(this.enemyX, this.enemyY, 6)
       databus.enemys.push(enemy)
-
-      let spike = databus.pool.getItemByClass('spike', Spike)
-      databus.spikes = []
-      spike.init(x, y, 6)
-      databus.spikes.push(spike)
     }
+  }
+
+  spikeShoot() {
+    let spike = databus.pool.getItemByClass('spike', Spike)
+    spike.init(this.enemyX, this.enemyY, 3)
+    databus.spikes.push(spike)
   }
 
   // 全局碰撞检测
@@ -94,6 +97,16 @@ export default class Main {
             databus.score  += 1
             break
           }
+        }
+      }
+    })
+  
+    databus.spikes.forEach((spike) => {
+      for ( let i = 0; i < databus.spikes.length; i++ ) {
+        let spike = databus.spikes[i]
+        if (this.player.isCollideWith(spike)) {
+          databus.gameOver = true
+          break
         }
       }
     })
@@ -179,7 +192,8 @@ export default class Main {
 
     this.collisionDetection()
 
-    if ( databus.frame % 20 === 0 ) {
+    if ( databus.frame % 100 === 0 ) {
+      this.spikeShoot()
       // this.player.shoot()
       //this.player.shoot2()
       //this.player.shoot3()
