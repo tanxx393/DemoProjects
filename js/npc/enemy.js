@@ -11,20 +11,18 @@ const __ = {
 
 let databus = new DataBus()
 
-function rnd(start, end){
-  return Math.floor(Math.random() * (end - start) + start)
-}
-
 export default class Enemy extends Animation {
   constructor() {
+    console.log("Init Enemy")
     super(ENEMY_IMG_SRC, ENEMY_WIDTH, ENEMY_HEIGHT)
 
     this.initExplosionAnimation()
   }
 
-  init(speed) {
-    this.x = rnd(0, window.innerWidth - ENEMY_WIDTH)
-    this.y = -this.height
+  init(x, y, speed) {
+    console.log("Enemy: ", x, y)
+    this.x = x
+    this.y = y
     this.health = 3
 
     this[__.speed] = speed
@@ -54,8 +52,9 @@ export default class Enemy extends Animation {
 
   // 每一帧更新子弹位置
   update() {
+    // console.log("Here", this.x, this.y)
     // this.y += this[__.speed]
-    this.y = window.innerHeight / 4 
+    //this.y = window.innerHeight / 4 
 
     // 对象回收
     if ( this.y > window.innerHeight / 4 + this.height )

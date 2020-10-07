@@ -71,6 +71,7 @@ export default class Animation extends Sprite {
   // 播放预定的帧动画
   playAnimation(index = 0, loop = false) {
     // 动画播放的时候精灵图不再展示，播放帧动画的具体帧
+    console.log("Playing")
     this.visible   = false
 
     this.isPlaying = true

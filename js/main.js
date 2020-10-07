@@ -1,5 +1,6 @@
 import Player     from './player/index'
 import Enemy      from './npc/enemy'
+import Spike      from './npc/spikes'
 import BackGround from './runtime/background'
 import GameInfo   from './runtime/gameinfo'
 import Music      from './runtime/music'
@@ -7,6 +8,12 @@ import DataBus    from './databus'
 
 let ctx   = canvas.getContext('2d')
 let databus = new DataBus()
+const ENEMY_WIDTH   = 60
+const ENEMY_HEIGHT  = 60
+
+function rnd(start, end){
+  return Math.floor(Math.random() * (end - start) + start)
+}
 
 /**
  * 游戏主函数
@@ -32,6 +39,7 @@ export default class Main {
     this.gameinfo = new GameInfo()
     this.music    = new Music()
     this.enemyActive = false
+    this.initEnemy = true
 
     this.bindLoop     = this.loop.bind(this)
     this.hasEventBind = false
@@ -50,13 +58,20 @@ export default class Main {
    * 帧数取模定义成生成的频率
    */
   enemyGenerate() {
-    if ( databus.frame % 100 === 0 && this.enemyActive == false) {
+    if (( databus.frame % 100 === 0 && this.enemyActive == false) || this.initEnemy) {
       let enemy = databus.pool.getItemByClass('enemy', Enemy)
       this.enemyActive = true
-      console.log(databus.enemys.length)
+      this.initEnemy = false
       databus.enemys = []
-      enemy.init(6)
+      let x = rnd(0, window.innerWidth - ENEMY_WIDTH)
+      let y = window.innerHeight / 4 
+      enemy.init(x, y, 6)
       databus.enemys.push(enemy)
+
+      let spike = databus.pool.getItemByClass('spike', Spike)
+      databus.spikes = []
+      spike.init(x, y, 6)
+      databus.spikes.push(spike)
     }
   }
 
@@ -65,9 +80,9 @@ export default class Main {
     let that = this
   
     databus.bullets.forEach((bullet) => {
-      // il = databus.enemys.length; 
       for ( let i = 0; i < 1; i++ ) {
         let enemy = databus.enemys[i]
+        // console.log("Collision: ", enemy)
         if ( !enemy.isPlaying && enemy.isCollideWith(bullet)) {
           let health = enemy.updateCurrentHealth()
           bullet.visible = false
@@ -75,6 +90,7 @@ export default class Main {
             enemy.playAnimation()
             that.music.playExplosion()
             this.enemyActive = false
+            this.initEnemy = true
             databus.score  += 1
             break
           }
@@ -118,7 +134,7 @@ export default class Main {
     this.bg.render(ctx)
 
     databus.bullets
-          .concat(databus.enemys)
+          .concat(databus.enemys, databus.spikes)
           .forEach((item) => {
               item.drawToCanvas(ctx)
             })
@@ -150,11 +166,12 @@ export default class Main {
     if ( databus.gameOver )
       return;
 
-    //this.bg.update()
+    // this.bg.update()
 
     databus.bullets
-           .concat(databus.enemys)
+           .concat(databus.enemys, databus.spikes)
            .forEach((item) => {
+              // console.log(item)
               item.update()
             })
 
@@ -163,7 +180,7 @@ export default class Main {
     this.collisionDetection()
 
     if ( databus.frame % 20 === 0 ) {
-      //this.player.shoot()
+      // this.player.shoot()
       //this.player.shoot2()
       //this.player.shoot3()
       //this.music.playShoot()

@@ -27,6 +27,7 @@ export default class Bullet extends Sprite {
 
   // 每一帧更新子弹位置
   update() {
+    // console.log("Here", this.x, this.y, this.visible)
     this.y -= this[__.speed]
 
     // 超出屏幕外回收自身
