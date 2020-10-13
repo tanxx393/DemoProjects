@@ -1,0 +1,31 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/history-bill/history-bill",
+    "pages/record-expend/record-expend",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#10AEFF",
+    "navigationBarTitleText": "My Page",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "img/home.jpg",
+        "selectedIconPath": "img/home_p.jpg",
+        "text": "Home Page"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "iconPath": "img/mine.jpg",
+        "selectedIconPath": "img/mine_p.jpg",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

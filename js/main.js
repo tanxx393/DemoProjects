@@ -27,6 +27,7 @@ export default class Main {
   }
 
   restart() {
+    
     databus.reset()
 
     canvas.removeEventListener(
